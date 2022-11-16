@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="style.css">
+    <title>To-do List</title>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header__logo">FTF</div>
+            <h1 class="header__title">To-do List</h1>
+        </div>
+    </header>
+    
+    <main class="main">
+        <div class="container container_theme_center">
+            <div class="to-do">
+                <div class="to-do__menu">
+                    <button class="to-do__button" id="Add">Добавить задачу</button>
+                    <button class="to-do__button" id="Save">Сохранить</button>
+                    <button class="to-do__button" id="Cancel">Отменить</button>
+                    <button class="to-do__button" id="Mark">Поставить метку</button>
+                    <button class="to-do__button" id="RemMark">Убрать метку</button>
+                    <button class="to-do__button" id="Edit">Редактировать</button>
+                    <button class="to-do__button" id="Rem">Удалить</button>
+                </div>
+                <div class="to-do__display">
+                    <div id="WinCreate" class="to-do__window">
+                        <div class="to-do__create-task">
+                            <input class="to-do__create-task-name" maxlength="16" type="text" placeholder="Название задачи">
+                            <div class="to-do__create-task-date">Дата создания</div>
+                            <textarea class="to-do__create-task-description" maxlength="140" placeholder="Описание задачи"></textarea>
+                        </div>
+                    </div>
+                    <div id="WinList" class="to-do__window">
+                        <div class="to-do__task-list"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__author">Author FiveThreeFive</div>
+        </div>
+    </footer>
+
+    <script src="script.js" type="module"></script>
+</body>
+</html>

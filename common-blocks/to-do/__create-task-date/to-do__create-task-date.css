@@ -1,0 +1,7 @@
+.to-do__create-task-date {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-style: italic;
+    font-size: 12px;
+}

@@ -1,0 +1,14 @@
+@import url(__button/to-do__button.css);
+@import url(__menu/to-do__menu.css);
+@import url(__display/to-do__display.css);
+@import url(__window/to-do__window.css);
+@import url(__create-task/to-do__create-task.css);
+@import url(__create-task-name/to-do__create-task-name.css);
+@import url(__create-task-date/to-do__create-task-date.css);
+@import url(__create-task-description/to-do__create-task-description.css);
+@import url(__task-list/to-do__task-list.css);
+
+.to-do {
+    display: flex;
+    gap: 10px;
+}

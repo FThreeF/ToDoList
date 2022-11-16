@@ -1,0 +1,5 @@
+.container_theme_center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

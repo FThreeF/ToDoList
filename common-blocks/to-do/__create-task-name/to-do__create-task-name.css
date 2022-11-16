@@ -1,0 +1,7 @@
+.to-do__create-task-name {
+    border-right: 2px solid rgb(100, 150, 150);
+    background: transparent;
+    padding-left: 2px;
+    font-size: 14px;
+    font-style: italic;
+}

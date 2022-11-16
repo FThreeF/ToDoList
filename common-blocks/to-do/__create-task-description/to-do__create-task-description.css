@@ -1,0 +1,11 @@
+.to-do__create-task-description {
+    border-top: 2px solid rgb(100, 150, 150);
+    background: transparent;
+    grid-column-start: 1;
+    grid-column-end: 3;
+    resize: none;
+    padding: 2px;
+    font-size: 12px;
+    font-style: italic;
+    
+}

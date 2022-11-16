@@ -1,0 +1,7 @@
+.to-do__button_status_active {
+    opacity: 1;
+}
+
+.to-do__button_status_active:hover {
+    background: rgb(150, 50, 50);
+}

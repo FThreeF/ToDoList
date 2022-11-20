@@ -1,0 +1,9 @@
+.to-do__task {
+    width: 360px;
+    min-height: 90px;
+    position: relative;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-template-rows: 30px auto;
+    border: 2px solid rgb(100, 150, 150);
+}

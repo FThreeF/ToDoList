@@ -12,6 +12,7 @@
 
 .to-do__task-list::-webkit-scrollbar {
     width: 0px;
+    height: 0px;
     border-left: 2px solid rgb(100, 150, 150);
 }
 .to-do__task-list::-webkit-scrollbar-thumb {

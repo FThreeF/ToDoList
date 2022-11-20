@@ -1,0 +1,8 @@
+.to-do__task-name {
+    padding-left: 2px;
+    display: flex;
+    align-items: center;
+    border-right: 2px solid rgb(100, 150, 150);
+    background: transparent;
+    font-style: normal;
+}

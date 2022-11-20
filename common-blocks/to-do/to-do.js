@@ -1,152 +1,167 @@
-const ButtonsMenu = document.querySelectorAll('.to-do__button');
-const Windows = document.querySelectorAll('.to-do__window');
-const WinList = document.querySelector('#WinList');
-const WinCreate = document.querySelector('#WinCreate');
-const TaskList = document.querySelector('.to-do__task-list');
-const CreateTaskName = document.querySelector('.to-do__create-task-name');
-const CreateTaskDate = `${new Date().getHours()}:${new Date().getMinutes()} ${new Date().getDate()}.${new Date().getMonth()}.${new Date().getFullYear()}`;
-const CreateTaskDescription = document.querySelector('.to-do__create-task-description');
+const menuButtons = document.querySelectorAll(".to-do__button");
+const windows = document.querySelectorAll(".to-do__window");
+const winList = document.querySelector("#WinList");
+const winCreate = document.querySelector("#WinCreate");
+const taskList = document.querySelector(".to-do__task-list");
+const elementCreateTaskName = document.querySelector(".to-do__create-task-name");
+let createTaskDate = () => `${new Date().getHours()}:${new Date().getMinutes()} ${new Date().getDate()}.${new Date().getMonth()}.${new Date().getFullYear()}`;
 
-const BActive = 'to-do__button to-do__button_status_active';
-const BDeactive = 'to-do__button to-do__button_status_deactive';
+const elementCreateTaskDescription = document.querySelector(".to-do__create-task-description");
+
+const classStatusActive = "to-do__button to-do__button_status_active";
+const classStatusInactive = "to-do__button to-do__button_status_inactive";
+const getAllTask = () => document.querySelectorAll(".to-do__task");
 
 //Parameters
-let currentIdTask = undefined;
-let numTask = 0;
-
-const ListIdWin = [
-    'WinList',
-    'WinCreate',
-]
-
+let idCurrentTask = undefined;
+let idCreateTask = 0;
+let modeEdit = false;
+const listOfIdWindows = ["WinList", "WinCreate"];
 
 //Start
-ManagerWin(ListIdWin[0]);
-CreateTask('23', '43', '5s');
-
-
+setWindow(listOfIdWindows[0]);
+createTask("Задача", createTaskDate(), "Описание");
 
 //Code
-
-
-
-function ManagerWin(IdWin) {
-    Windows.forEach(win => win.style.display = win.id == IdWin ? 'flex' : 'none')
-    UpdateButtonsTask()
+function setWindow(id) {
+    windows.forEach((window) => (window.style.display = window.id == id ? "flex" : "none"));
+    updateStatusMenuButton();
 }
 
+function updateStatusMenuButton() {
+    menuButtons.forEach((button) => (button.className = classStatusInactive));
+    menuButtons.forEach((button) => button.classList.add("to-do__button"));
+    if (getComputedStyle(winList).display == "flex") {
+        getStatusButtonMenu("Add", classStatusActive);
+        if (idCurrentTask != undefined) {
+            getStatusButtonMenu("Remove", classStatusActive);
+            getStatusButtonMenu("Edit", classStatusActive);
 
-function UpdateButtonsTask() {
-    ButtonsMenu.forEach(button => button.className = BDeactive);
-    ButtonsMenu.forEach(button => button.classList.add('to-do__button'));
-    if (getComputedStyle(WinList).display == 'flex') {
-        GetStatusButtonMenu('Add', BActive);
-    }
-
-    else if (getComputedStyle(WinCreate).display == 'flex') {
-        GetStatusButtonMenu('Save', BActive);
-        GetStatusButtonMenu('Cancel', BActive);
-    }
-}
-
-function GetStatusButtonMenu(name, status) {
-    ButtonsMenu.forEach(button => {
-        if (button.id == name) {
-            button.className = status;  
+            getAllTask().forEach((task) => {
+                if (task.id == idCurrentTask) {
+                    if (getComputedStyle(task.querySelector(".to-do__task-mark")).display != "flex") {
+                        getStatusButtonMenu("Mark", classStatusActive);
+                    } else {
+                        getStatusButtonMenu("RemMark", classStatusActive);
+                    }
+                }
+            });
         }
-    })
+    } else if (getComputedStyle(winCreate).display == "flex") {
+        getStatusButtonMenu("Save", classStatusActive);
+        getStatusButtonMenu("Cancel", classStatusActive);
+    }
 }
 
+function getStatusButtonMenu(name, status) {
+    menuButtons.forEach((button) => {
+        if (button.id == name) button.className = status;
+    });
+}
 
-
-
-
-
-ButtonsMenu.forEach(button => {
+menuButtons.forEach((button) => {
     button.onclick = () => {
-        if (button.className == BDeactive) return;
+        if (button.className == classStatusInactive) return;
         switch (button.id) {
-            case 'Add':
-                ManagerWin(ListIdWin[1]);
+            case "Add":
+                setWindow(listOfIdWindows[1]);
                 break;
-            case 'Save':
-                ManagerWin(ListIdWin[0]);
-                CreateTask(CreateTaskName.value, CreateTaskDate, CreateTaskDescription.value);
+            case "Save":
+                if (modeEdit) {
+                    document.querySelectorAll(".to-do__task").forEach((task) => {
+                        if (task.id == idCurrentTask) {
+                            task.querySelector(".to-do__task-name").textContent = elementCreateTaskName.value;
+                            task.querySelector(".to-do__task-description").textContent = elementCreateTaskDescription.value;
+                        }
+                    });
+                    modeEdit = false;
+                } else {
+                    createTask(elementCreateTaskName.value, createTaskDate(), elementCreateTaskDescription.value);
+                }
+                setWindow(listOfIdWindows[0]);
+                [elementCreateTaskName, elementCreateTaskDescription].map((element) => (element.value = ""));
                 break;
-            case 'Cancel':
-                ManagerWin(ListIdWin[0]);
+            case "Cancel":
+                if (modeEdit) {
+                    [elementCreateTaskName, elementCreateTaskDescription].map((element) => (element.value = ""));
+                }
+                modeEdit = false;
+                setWindow(listOfIdWindows[0]);
                 break;
-            case 'Mark':
-                alert('SetMark');
+            case "Mark":
+                document.querySelectorAll(".to-do__task").forEach((task) => {
+                    if (task.id == idCurrentTask) task.querySelector(".to-do__task-mark").style.display = "flex";
+                });
+                updateStatusMenuButton();
                 break;
-            case 'RemMark':
-                alert('RemoveMark');
+            case "RemMark":
+                document.querySelectorAll(".to-do__task").forEach((task) => {
+                    if (task.id == idCurrentTask) task.querySelector(".to-do__task-mark").style.display = "none";
+                });
+                updateStatusMenuButton();
                 break;
-            case 'Edit':
-                alert('Edit');
+            case "Edit":
+                modeEdit = true;
+                setWindow(listOfIdWindows[1]);
+                document.querySelectorAll(".to-do__task").forEach((task) => {
+                    if (task.id == idCurrentTask) {
+                        elementCreateTaskName.value = task.querySelector(".to-do__task-name").textContent;
+                        elementCreateTaskDescription.value = task.querySelector(".to-do__task-description").textContent;
+                    }
+                });
+                updateStatusMenuButton();
                 break;
-            case 'RemTask':
-                alert('Remove');
+            case "Remove":
+                document.querySelectorAll(".to-do__task").forEach((task) => {
+                    if (task.id == idCurrentTask) task.remove(), (idCurrentTask = undefined), updateStatusMenuButton();
+                });
+
                 break;
         }
-    }
-})
+    };
+});
 
+function createTask(name, date, description) {
+    const currentTask = document.createElement("div");
+    currentTask.className = "to-do__task";
+    currentTask.id = idCreateTask++;
+    taskList.prepend(currentTask);
 
+    const setStyleElement = (element, className, text) => {
+        element = document.createElement("div");
+        element.className = className;
+        element.textContent = text;
+        currentTask.append(element);
+    };
 
-function CreateTask(name, date, description) {
-    const currentTask = document.createElement('div');
-    currentTask.className = 'to-do__task';
-    currentTask.id = numTask++;
-    TaskList.prepend(currentTask);
+    let taskMark;
+    let taskName;
+    let taskDate;
+    let taskDescription;
 
-    const taskMark = document.createElement('div');
-    taskMark.className = 'to-do__task-mark';
-    taskMark.textContent = 'Выполнено';
-    currentTask.append(taskMark);
+    setStyleElement(taskMark, "to-do__task-mark", "Выполнено");
+    setStyleElement(taskName, "to-do__task-name", name);
+    setStyleElement(taskDate, "to-do__task-date", date);
+    setStyleElement(taskDescription, "to-do__task-description", description);
 
-    const taskName = document.createElement('div');
-    taskName.className = 'to-do__task-name';
-    currentTask.append(taskName);
-    taskName.textContent = name;
-
-    const taskDate = document.createElement('div');
-    taskDate.className = 'to-do__task-date';
-    taskDate.textContent = date;
-    currentTask.append(taskDate);
-
-    const taskDescription = document.createElement('div');
-    taskDescription.className = 'to-do__task-description';
-    taskDescription.textContent = description;
-    currentTask.append(taskDescription);
-
-    currentTask.onclick = () => {
-        let borderTask = '2px solid rgb(250, 200, 0)';
-        
-                
-        document.querySelectorAll('.to-do__task').forEach(el => {
-            borderTask = '2px solid rgb(100, 150, 150)';
-            el.style.border = borderTask;
-        })
-
-        document.querySelectorAll('.to-do__task-name').forEach(el => {
-            borderTask = '2px solid rgb(100, 150, 150)';
-            el.style.borderRight = borderTask;
-        })
-
-        document.querySelectorAll('.to-do__task-description').forEach(el => {
-            borderTask = '2px solid rgb(100, 150, 150)';
-            el.style.borderTop = borderTask;
-        })
-        idTask = currentTask.id;
-        
-        borderTask = '2px solid rgb(250, 200, 0)';
-        currentTask.style.border = borderTask;
-        taskName.style.borderRight = borderTask;
-        taskDescription.style.borderTop = borderTask;
-        updateButtonsTask()
-        console.log(idTask);
-    }
+    currentTask.onclick = () => setActiveTask(currentTask);
 }
 
+function setActiveTask(currentTask) {
+    idCurrentTask = currentTask.id;
+    setCurrentTaskMode(currentTask);
+    updateStatusMenuButton();
+}
 
+function setCurrentTaskMode(currentTask) {
+    document.querySelectorAll(".to-do__task").forEach((task) => {
+        let currentBorderStyleMode = setCurrentBorderStyleMode(currentTask, task);
+        task.style.border = currentBorderStyleMode;
+        task.querySelector(".to-do__task-name").style.borderRight = currentBorderStyleMode;
+        task.querySelector(".to-do__task-description").style.borderTop = currentBorderStyleMode;
+    });
+}
+
+function setCurrentBorderStyleMode(currentTask, task) {
+    return currentTask.id == task.id ? "2px solid rgb(250, 200, 0)" : "2px solid rgb(100, 150, 150)";
+}

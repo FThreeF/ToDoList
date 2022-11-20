@@ -1,5 +1,5 @@
 @import url(_status/to-do__button_status_active.css);
-@import url(_status/to-do__button_status_deactive.css);
+@import url(_status/to-do__button_status_inactive.css);
 
 .to-do__button {
     width: 100%;

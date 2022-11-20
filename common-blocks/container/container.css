@@ -1,6 +1,3 @@
-@import url(_theme/container_theme_center.css);
-@import url(_theme/container_thene_end.css);
-
 .container {
     max-width: 1000px;
     height: 100%;

@@ -1,9 +1,3 @@
-@import url(common-blocks/container/container.css);
-@import url(common-blocks/header/header.css);
-@import url(common-blocks/main/main.css);
-@import url(common-blocks/to-do/to-do.css);
-@import url(common-blocks/footer/footer.css);
-
 *, *:before, *:after {
     margin: 0;
     padding: 0;

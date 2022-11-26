@@ -20,7 +20,7 @@ const listOfIdWindows = ["WinList", "WinCreate"];
 
 //Start
 setWindow(listOfIdWindows[0]);
-createTask("Задача", createTaskDate(), "Описание");
+loadTasks();
 
 //Code
 function setWindow(id) {
@@ -93,12 +93,14 @@ menuButtons.forEach((button) => {
                     if (task.id == idCurrentTask) task.querySelector(".to-do__task-mark").style.display = "flex";
                 });
                 updateStatusMenuButton();
+                saveTasks();
                 break;
             case "RemMark":
                 document.querySelectorAll(".to-do__task").forEach((task) => {
                     if (task.id == idCurrentTask) task.querySelector(".to-do__task-mark").style.display = "none";
                 });
                 updateStatusMenuButton();
+                saveTasks();
                 break;
             case "Edit":
                 modeEdit = true;
@@ -115,16 +117,16 @@ menuButtons.forEach((button) => {
                 document.querySelectorAll(".to-do__task").forEach((task) => {
                     if (task.id == idCurrentTask) task.remove(), (idCurrentTask = undefined), updateStatusMenuButton();
                 });
-
+                saveTasks();
                 break;
         }
     };
 });
 
-function createTask(name, date, description) {
+function createTask(name, date, description, id) {
     const currentTask = document.createElement("div");
     currentTask.className = "to-do__task";
-    currentTask.id = idCreateTask++;
+    currentTask.id = id ?? getGeneratedId(10);
     taskList.prepend(currentTask);
 
     const setStyleElement = (element, className, text) => {
@@ -133,6 +135,8 @@ function createTask(name, date, description) {
         element.textContent = text;
         currentTask.append(element);
     };
+
+
 
     let taskMark;
     let taskName;
@@ -144,7 +148,14 @@ function createTask(name, date, description) {
     setStyleElement(taskDate, "to-do__task-date", date);
     setStyleElement(taskDescription, "to-do__task-description", description);
 
+    
+    
+    
+
+
     currentTask.onclick = () => setActiveTask(currentTask);
+    
+    saveTasks();
 }
 
 function setActiveTask(currentTask) {
@@ -164,4 +175,56 @@ function setCurrentTaskMode(currentTask) {
 
 function setCurrentBorderStyleMode(currentTask, task) {
     return currentTask.id == task.id ? "2px solid rgb(250, 200, 0)" : "2px solid rgb(100, 150, 150)";
+}
+
+
+
+function saveTasks() {
+    let list = [];
+    let taskDate = {}
+    getAllTask().forEach(task => {
+        taskDate = Object.assign({
+            id: task.id,
+            mark: (getComputedStyle(task.querySelector('.to-do__task-mark')).display != 'none'),
+            name: task.querySelector('.to-do__task-name').textContent,
+            date: task.querySelector('.to-do__task-date').textContent,
+            description: task.querySelector('.to-do__task-description').textContent,
+            
+        })
+        list = [taskDate, ...list];
+    })
+    localStorage.setItem('tasks', JSON.stringify(list));
+
+    console.log(JSON.parse(localStorage.getItem('tasks')));
+    
+}
+
+function loadTasks() {
+    JSON.parse(localStorage.getItem('tasks')).forEach(async task => {
+        
+        await createTask(task.name, task.date, task.description, task.id);
+
+        console.log(task);
+
+        
+        getAllTask().forEach(el => {
+            if (el.id == task.id) {
+                el.querySelector('.to-do__task-mark').style.display = task.mark ? 'flex' : 'none';
+            }
+        })
+        saveTasks();
+    
+    })
+
+}
+
+
+function getGeneratedId(length) {
+    let result = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
 }

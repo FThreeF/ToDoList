@@ -201,9 +201,9 @@ function saveTasks() {
 
 function loadTasks() {
     if (localStorage.getItem('tasks') === null) return;
-    JSON.parse(localStorage.getItem('tasks')).forEach(async task => {
+    JSON.parse(localStorage.getItem('tasks')).forEach(task => {
         
-        await createTask(task.name, task.date, task.description, task.id);
+        createTask(task.name, task.date, task.description, task.id);
 
         console.log(task);
 

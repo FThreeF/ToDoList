@@ -168,13 +168,11 @@ function setCurrentTaskMode(currentTask) {
     document.querySelectorAll(".to-do__task").forEach((task) => {
         let currentBorderStyleMode = setCurrentBorderStyleMode(currentTask, task);
         task.style.border = currentBorderStyleMode;
-        task.querySelector(".to-do__task-name").style.borderRight = currentBorderStyleMode;
-        task.querySelector(".to-do__task-description").style.borderTop = currentBorderStyleMode;
     });
 }
 
 function setCurrentBorderStyleMode(currentTask, task) {
-    return currentTask.id == task.id ? "2px solid rgb(250, 200, 0)" : "2px solid rgb(100, 150, 150)";
+    return currentTask.id == task.id ? "4px dashed red" : '';
 }
 
 
